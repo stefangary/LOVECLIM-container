@@ -1,5 +1,9 @@
 # LOVECLIM-container
-Docker file and associated documentation for building and running a LOVECLIM container.
+Docker file and associated documentation for 
+building and running a LOVECLIM container.
+
++ [Main LOVECLIM site](https://www.elic.ucl.ac.be/modx/index.php?id=81)
++ [LOVECLIM download](https://www.elic.ucl.ac.be/modx/index.php?id=289)
 
 # Building the Docker container
 
@@ -41,6 +45,19 @@ and then create a singularity image from this tarball:
 # image archive file.  Absolute path example: docker-archive:///mnt/path_name
 singularity build --sandbox loveclim docker-archive://loveclim.tar
 ```
+
+The above line creates a Singularity sandbox which is the
+container image as a series of files and directories that
+can be directly accessed by the user outside the container
+for development purposes.  A "more contained" container
+image file can be generated with:
+
+```bash
+singularity build loveclim.sif docker-archive://loveclim.tar
+```
+
+The above was based on the [Singularity docs](https://sylabs.io/guides/3.0/user-guide/build_a_container.html).
+
 
 # Running the Singularity container
 
@@ -87,6 +104,22 @@ Downloaded the LOVECLIM V1.2 [sample output](https://www.elic.ucl.ac.be/modx/ass
 The output files in my run using `example.params` have similar structure 
 and variables as in the sample output.  Also, I verified that the large
 scale ocean properties are reasonable (MOC, T, S, SSH, SST, etc.)
+
+# Writing container to .sif
+
+After verifying that [no changes were required in the container](https://sylabs.io/guides/3.0/user-guide/build_a_container.html)
+sandbox, I built an image file:
+
+```bash
+singularity build loveclim.sif ./loveclim/
+```
+
+This line DOES NOT WORK due to permissions issues
+in the sandbox directory.  I don't have root access
+so I cannot copy/read some files in the sandbox
+directory.  If you want an `.sif`, see the comments
+near the end of the section `Unpacking and converting to Singularity`
+
 
 # Git submodules
 
